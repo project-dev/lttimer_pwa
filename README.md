@@ -6,10 +6,6 @@ DSEG7Classic-Regular.ttf
 https://www.keshikan.net/fonts.html
 
 
-frontline.ttf(非商用に限りフリーフォント)
-http://www.gekitetz.com/
-
-
 音に関しては以下の時報をダウンロードしてください。
 使用する場合はライセンスに従う必要があります。
 https://otologic.jp/free/se/countdown01.html
