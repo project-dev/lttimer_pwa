@@ -1,11 +1,14 @@
+var VERSION="1.1.0"
 var CACHE_NAME = 'lttimer';
 var CACHE_FILE = [
 	 './index.html'
-	,'./css/DSEG7Classic-Regular.ttf'
-	,'./css/frontline.ttf'
+	,'./css/DSEG7Classic-Regular.woff'
+	,'./css/PixelMplus10-Regular.woff'
 	,'./js/jquery-1.9.1.min.js'
 	,'./sound/Zihou01-mp3/Zihou01-1.mp3'
 	,'./sound/Zihou01-mp3/Zihou01-1.ogg'
+	,'./sound/silent.mp3'
+	,'./sound/silent.ogg'
 ];
 const CACHE_KEYS = [
   CACHE_NAME

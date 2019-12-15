@@ -10,18 +10,19 @@
 	<title>LT Timer</title>
 	<style>
 		@font-face {
-		  font-family: 'frontline';
-		  src: url('./css/frontline.ttf') format('truetype');
+		  font-family: 'DSEG7Classic';
+		  src: url('./css/DSEG7Classic-Regular.woff') format('woff');
 		  font-display: swap;
 		}
 		@font-face {
-		  font-family: 'DSEG7Classic';
-		  src: url('./css/DSEG7Classic-Regular.ttf') format('truetype');
-		  font-display: swap;
+		    font-family: 'pixelmplus10';
+		    src: url('pixelmplus10-regular.woff') format('woff')
+		    font-weight: normal;
+		    font-style: normal;
 		}
 
 		#preloadfont1{
-			font:frontline;
+			font:pixelmplus10;
 			opacity:0;
 			height:0;
 			width:0;
@@ -59,14 +60,30 @@
 		}
 
 	</style>
+	</div>
 	<script src="./js/jquery-1.9.1.min.js" content="text/javascript"></script>
 	<script>
+		'use strict';
+
+		var audioCtx;
+		const audioInitEventName = typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup';
+		document.addEventListener(audioInitEventName, initAudioContext);
+		function initAudioContext(){
+			console.log("silent play");
+			document.removeEventListener(audioInitEventName, initAudioContext);
+			audioCtx.resume();
+		}
+
 		<!-- サービスワーカーの登録 -->
 		if ('serviceWorker' in navigator) {
 //			navigator.serviceWorker.register('./sw.js', {scope: './'})
 			navigator.serviceWorker.register('./sw.js')
 			.then(function(){
 				console.log('Service Worker をインストールしました');
+				registration.onupdatefound = function() {
+					console.log('アップデートがあります！');
+					registration.update();
+				}
 			})
 			.catch((error) => {
 				// registration failed
@@ -109,7 +126,7 @@
 				}
 
 				draw(ctx){
-					console.log("draw");
+//					console.log("draw");
 					ctx.font = this.fontsize + "px '" + this.fontname + "'";
 					var metrics = ctx.measureText(this.text);
 					var txtX = (this.width - metrics.width) / 2;
@@ -169,7 +186,7 @@
 							ctx.fillRect(0, 0, width, height);
 
 							var titleFontSize = fontSizeBase * 2 * offset;
-							ctx.font = titleFontSize + "px 'frontline'";
+							ctx.font = titleFontSize + "px 'pixelmplus10'";
 
 							var metrics = ctx.measureText("LT Timer")
 							var titleX = (width - metrics.width) / 2;
@@ -178,9 +195,17 @@
 							ctx.fillStyle = "rgb(255, 255, 255)";
 							ctx.fillText("LT Timer", titleX, titleY);
 
+							ctx.font = (titleFontSize / 2) + "px 'pixelmplus10'";
+							ctx.fillText("1.0.0", titleX + metrics.width, titleY + (titleFontSize / 2));
+
+							ctx.font = (titleFontSize / 4) + "px 'pixelmplus10'";
+							ctx.fillText("Font \"DSEG\" by けしかん", width - 200, height - (titleFontSize / 4) - 4);
+
+
+
 							if($.sceneWait() == true){
 								var titleFontSize = fontSizeBase  * offset;
-								ctx.font = titleFontSize + "px 'frontline'";
+								ctx.font = titleFontSize + "px 'pixelmplus10'";
 
 								// ボタンの描画
 
@@ -197,7 +222,7 @@
 								var btnY = height / 3 * 2;
 								var btnX = width / 2 - (width * 0.05) - btnWidth;
 
-								var btnMode= new Button("MODE A", btnX, btnY, btnWidth, btnHeight, "frontline", titleFontSize);
+								var btnMode= new Button("MODE A", btnX, btnY, btnWidth, btnHeight, "pixelmplus10", titleFontSize);
 
 								ctx.fillStyle = "rgb(255, 255, 255)";
 								switch(mode){
@@ -221,7 +246,7 @@
 								// Startボタン
 								metrics = ctx.measureText("START");
 								btnX = width / 2 + (width * 0.05);
-								var btnStart= new Button("START", btnX, btnY, btnWidth, btnHeight, "frontline", titleFontSize);
+								var btnStart= new Button("START", btnX, btnY, btnWidth, btnHeight, "pixelmplus10", titleFontSize);
 
 								btnMode.draw(ctx);
 								btnStart.draw(ctx);
@@ -238,6 +263,8 @@
 									btnStart.click(function(){
 										// 開始
 										$.sceneChange(1);
+										$.playSound(dogBarkingBuffer);
+										$.loadSound("./sound/Zihou01-mp3/Zihou01-1.mp3");
 										preDate = new Date().getTime();
 										preSec = 0;
 										isCountDown = false;
@@ -366,8 +393,8 @@
 
 		 					// 時間描画
 							if(drawTimer == true){
-								ctx.fillStyle = textStyle;
 								ctx.font = timerFontSize + "px 'DSEG7Classic'";
+								ctx.fillStyle = textStyle;
 
 								var metrics = ctx.measureText(timerString)
 								var timeX = (width - metrics.width) / 2;
@@ -395,7 +422,7 @@
 							var msgFontSize = fontSizeBase * 7 * offset;
 
 							ctx.fillStyle = "rgb(255, 255, 0)";
-							ctx.font = msgFontSize + "px 'frontline'";
+							ctx.font = msgFontSize + "px 'pixelmplus10'";
 
 							var msg = "Time Up!";
 							var metrics = ctx.measureText(msg)
@@ -446,7 +473,7 @@
 
 					// Decode asynchronously
 					request.onload = function() {
-						context.decodeAudioData(request.response, function(buffer) {
+						audioCtx.decodeAudioData(request.response, function(buffer) {
 							dogBarkingBuffer = buffer;
 //						}, onError);
 						}, function(){});
@@ -454,24 +481,23 @@
 					request.send();
 				},
 				playSound:function(buffer){
-					var source = context.createBufferSource(); // creates a sound source
+					var source = audioCtx.createBufferSource(); // creates a sound source
 					source.buffer = buffer;                    // tell the source which sound to play
-					source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+					source.connect(audioCtx.destination);       // connect the source to the context's destination (the speakers)
 					source.start(0);                           // play the source now
 					                                         // note: on older systems, may have to use deprecated noteOn(time);
 				}
 			});
 
-			$(window).load(function(){
+			var loaded;
+			window.addEventListener("load", function(e){
 				try {
-					// Fix up for prefixing
 					window.AudioContext = window.AudioContext||window.webkitAudioContext;
-					context = new AudioContext();
+					audioCtx = new window.AudioContext();
 				}
 				catch(e) {
-					alert('Web Audio API is not supported in this browser');
+					console.log('Web Audio API is not supported in this browser');
 				}
-				$.loadSound("./sound/Zihou01-mp3/Zihou01-1.mp3");
 				$.canvasResize();
 				setInterval("$.main()", 60);
 			});
@@ -570,10 +596,6 @@
 <body>
 	<div id="drawarea">
 		<canvas id="frontbuff"></canvas>
-<!--
-		<div id="preloadfont1">.<div>
-		<div id="preloadfont2">.<div>
--->
 	</div>
 <!--
 	<audio id="se001" preload="auto"/>
