@@ -90,7 +90,6 @@
 				console.log('Service Worker install success.');
 
 				registration.onupdatefound = function() {
-					// 更新があると呼び出される
 					console.log('Update : ServiceWorker');
 					registration.update();
 				}

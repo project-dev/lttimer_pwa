@@ -1,27 +1,27 @@
 {
-  "name": "LT Timer",
-  "orientation": "landscape",
-  "display": "standalone",
-  "start_url": "./",
-  "short_name": "LT Timer",
-  "description": "LT Timer",
-  "background_color": "#000020",
-  "theme_color": "#000020",
-  "icons": [
-    {
-      "src": "./img/icon_48.png",
-      "type": "image/png",
-      "sizes": "48x48"
-    },
-    {
-      "src": "./img/icon_96.png",
-      "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src": "./img/icon_192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    }
-  ]
+	"name": "LT Timer",
+	"orientation": "landscape",
+	"display": "standalone",
+	"start_url": "./",
+	"short_name": "LT Timer",
+	"description": "LT Timer",
+	"background_color": "#000020",
+	"theme_color": "#000020",
+	"icons": [
+			{
+				"src": "./img/icon_48.png",
+				"type": "image/png",
+				"sizes": "48x48"
+			},
+		{
+			"src": "./img/icon_96.png",
+			"type": "image/png",
+			"sizes": "96x96"
+		},
+		{
+			"src": "./img/icon_192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		}
+	]
 }
