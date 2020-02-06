@@ -1,11 +1,12 @@
 # lttimer_pwa
 
-以下のフォントを使用してますので、実際に動かす場合はダウンロードして使ってください。
+以下のフォントを使用してます。
 
-DSEG7Classic-Regular.ttf
+7セグ・14セグフォント 「DSEG」
 https://www.keshikan.net/fonts.html
+PixelMplus（ピクセル・エムプラス）
+http://itouhiro.hatenablog.com/entry/20130602/font
 
-
-音に関しては以下の時報をダウンロードしてください。
-使用する場合はライセンスに従う必要があります。
+音に関してはOtoLogicさんの時報をダウンロードしてください。
 https://otologic.jp/free/se/countdown01.html
+
